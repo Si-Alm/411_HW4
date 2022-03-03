@@ -43,7 +43,7 @@ We then used a two-sample t-test to determine if there’s a difference in means
 
 ## Summary of Statistical Findings
 
-Using the cubed root of the brain size, we calculated the mean for small litters to be 1.758 and large litters to be 2.022. From these values, we found the difference in means to be 0.264. After applying a two-sample t-test, we can conclude that there is strong evidence in support of there being a difference in the brain size of the small litter group and the large litter group (t = 2.1707, df = 94, p-value = 0.03247). 
+Using the cubed root of the brain size, we calculated the mean for small litters to be 1.758 and large litters to be 2.022. From these values, we found the difference in means to be 0.264. After applying a two-sample t-test, we can conclude that there is strong evidence in support of there being a difference in the brain size of the small litter group and the large litter group (t = 2.1707, df = 94, p-value = 0.03247). We are 95% confident that the true mean of the cubed root of the brain size of the large litter group is larger by between 0.0225 and 0.5051.
 
 ## Scope of Inference
 
