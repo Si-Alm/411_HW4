@@ -4,8 +4,8 @@ author: "Aiden, Justin, Silas"
 header-includes:
     - \usepackage{setspace}\doublespacing
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -20,51 +20,65 @@ library(mosaic)
 library(Sleuth3)
 library(yarrr)
 library(tidyverse)
+library(MASS)
 ```
 
 
 ## Introduction
 
+The research question at hand is whether or not there is a relationship between the size of a mammal's litter (LitterSize) and the brain size of said mammal (BrainSize). The International Zoo Year Book provided more than 80% of the data for litter size. We have a total sample size of 96 observations with 45 observations for large species and 51 observations for small species.   From this observational study, we want to be able to tell if there is evidence to suggest that there is a difference in brain size between mammals that produce a small litter and mammals that produce a large litter.  A litter is considered small if it consists of less than two offspring and large for everything above that. Brain size is measured as a relative ratio of body weight to brain weight. 
 
-
-
-
-
-
-- Data is looking at litter size as a predictor of brain size. 
-- The estimates for litter size for each observation were pulled from a range of published research articles from the 50's and 60's. The data for *adult* brain size was also retrieved from multiple published sources. Though the resources used may have had some form of random sampling, this study does not. Additionally, it is an observational study and, thus, has no random assignment either. 
-
-- Question: Does mean brain weight differ between mammals with large litters (>=2) and small litters (<2)? 
-
-$H_0: \mu_{small} - \mu_{large} = 0$
-
-$H_a: \mu_{small} - \mu_{large} \neq 0$
 
 ## Statistical Procedures Used
 
+In this study, the response variable is the "brain size" of the observed mammals. This value was calculated with the formula: $1000 * BrainWeight/BodyWeight$, thus it doesn't have units - it's just a relative number. We used a pirate plot to display the initial data.
+
+
+From the description of the study, we have no evidence of a violation of the independence assumption. There’s no information to indicate that the brain size of one species has an effect on the brain size of another species. There seems to be strong evidence against the assumption of normality. Looking at the first pirate plot created, we can see that there is a strong right skew on the “Large” group and some more mild right skew on the “Small” group. Additionally, there is moderate to strong evidence against equal variance, as well. Looking at the standard deviations, we have a ratio of $9.836924/5.460298 = 1.801536$. With these two violations, we created a boxcox plot to see if any transformations could help our assumptions. After applying a cube root function to brain size, our assumptions look better. The new pirate plot shows little to no skew, giving us little to no evidence against normality. From the new favstats, our ratio of standard deviations is now $0.5260758/0.6632847 = 0.7931372$. Again, this gives little to no evidence against equal variance.
+
+
+We then used a two-sample t-test to determine if there’s a difference in means in the brain size of mammals and how large it is. The model used in our two-sample t-test looked at the cubed root brain size conditioned on litter size. 
+
+
+
 ## Summary of Statistical Findings
+
+Using the cubed root of the brain size, we calculated the mean for small litters to be 1.758 and large litters to be 2.022. From these values, we found the difference in means to be 0.264. After applying a two-sample t-test, we can conclude that there is strong evidence in support of there being a difference in the brain size of the small litter group and the large litter group (t = 2.1707, df = 94, p-value = 0.03247). 
 
 ## Scope of Inference
 
+The data does not appear to have been selected randomly, so we can not extend our results to a greater population of placental mammals. Also, the groups of litter size were not assigned randomly, so we can only discuss an association between the brain size and litter size of these animals. 
+
 ## Appendix
 
-```{r}
-ex0333$cubert_BrainSize ='^'(ex0333$BrainSize, 1/3)
-pirateplot(BrainSize~LitterSize, data=ex0333, main="Brain Sizes of Animals w/ Small & Large Litters")
-favstats(BrainSize~LitterSize, data=ex0333)
-favstats(cubert_BrainSize~LitterSize, data=ex0333)
-```
+
+#### Initial Data
 
 ```{r}
-library(MASS)
+pirateplot(BrainSize~LitterSize, data=ex0333, main="Brain Sizes of Animals w/ Small & Large Litters")
+favstats(BrainSize~LitterSize, data=ex0333)
+```
+
+#### Transformation
+
+```{r}
 lm1<-lm(ex0333$BrainSize~1)
 boxcox(lm1)
 
-pirateplot(cubert_BrainSize~LitterSize, data=ex0333)
+
+ex0333$cubert_BrainSize ='^'(ex0333$BrainSize, 1/3)
 ```
 
+#### Transformed data
+
 ```{r}
-t.test(BrainSize~LitterSize, data=ex0333, var.equal=TRUE)
+pirateplot(cubert_BrainSize~LitterSize, data=ex0333, main="Brain Sizes of Animals w/ Small & Large Litters")
+favstats(cubert_BrainSize~LitterSize, data=ex0333)
+```
+
+#### $t$-test 
+
+```{r}
 t.test(cubert_BrainSize~LitterSize, data=ex0333, var.equal=TRUE)
 ```
 
