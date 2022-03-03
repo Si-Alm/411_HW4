@@ -1,0 +1,70 @@
+---
+title: "Mammal Minds"
+author: "Aiden, Justin, Silas"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      include = TRUE,
+                      eval= TRUE
+                      )
+
+library(mosaic)
+library(Sleuth3)
+library(yarrr)
+library(tidyverse)
+```
+
+
+## Introduction
+
+
+
+
+
+
+
+- Data is looking at litter size as a predictor of brain size. 
+- The estimates for litter size for each observation were pulled from a range of published research articles from the 50's and 60's. The data for *adult* brain size was also retrieved from multiple published sources. Though the resources used may have had some form of random sampling, this study does not. Additionally, it is an observational study and, thus, has no random assignment either. 
+
+- Question: Does mean brain weight differ between mammals with large litters (>=2) and small litters (<2)? 
+
+$H_0: \mu_{small} - \mu_{large} = 0$
+
+$H_a: \mu_{small} - \mu_{large} \neq 0$
+
+## Statistical Procedures Used
+
+## Summary of Statistical Findings
+
+## Scope of Inference
+
+## Appendix
+
+```{r}
+ex0333$cubert_BrainSize ='^'(ex0333$BrainSize, 1/3)
+pirateplot(BrainSize~LitterSize, data=ex0333, main="Brain Sizes of Animals w/ Small & Large Litters")
+favstats(BrainSize~LitterSize, data=ex0333)
+favstats(cubert_BrainSize~LitterSize, data=ex0333)
+```
+
+```{r}
+library(MASS)
+lm1<-lm(ex0333$BrainSize~1)
+boxcox(lm1)
+
+pirateplot(cubert_BrainSize~LitterSize, data=ex0333)
+```
+
+```{r}
+t.test(BrainSize~LitterSize, data=ex0333, var.equal=TRUE)
+t.test(cubert_BrainSize~LitterSize, data=ex0333, var.equal=TRUE)
+```
+
